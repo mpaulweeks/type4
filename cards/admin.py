@@ -7,7 +7,13 @@ class StatusInline(admin.StackedInline):
 	
 class CardAdmin(admin.ModelAdmin):
 	inlines = [StatusInline]
-	list_display = ['name', 'is_in_stack']
+	flags = ['isSorcery']
+	fieldsets = [
+		(None,		{'fields': ['name']}),
+		('Flags',	{'fields': flags}),
+	]
+ 	list_display = ['name', 'is_in_stack'] + flags
+ 	list_filter = flags
 	search_fields = ['name']
 
 
