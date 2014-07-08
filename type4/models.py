@@ -6,7 +6,7 @@ logger = logging.getLogger(__name__)
 class Card(models.Model):
 
 	# fields
-    name = models.CharField(max_length=100)    
+    name = models.CharField(max_length=100, primary_key=True)
     is_sorcery = models.BooleanField('is sorcery speed', default=False)
     is_wrath = models.BooleanField('is mass removal', default=False)
     is_burn = models.BooleanField('burns players', default=False)
@@ -19,8 +19,10 @@ class Card(models.Model):
     # funcs
     def is_in_stack(self):
     	ordered_statuses = Status.objects.filter(
-    		card_id = self.id
+    		card_id = self.name
     	).order_by('timestamp')
+    	if ordered_statuses.count() == 0:
+    		return False
     	current_status = ordered_statuses[ordered_statuses.count()-1]
     	logger.critical(current_status)
     	return current_status.is_in_stack()
@@ -31,7 +33,7 @@ class Card(models.Model):
     
     @staticmethod
     def flags():
-    	return list(n for n in Card._meta.get_all_field_names() if n.startswith('is'))
+    	return list(n for n in Card._meta.get_all_field_names() if n.startswith('is_'))
 
 class StatusChoice():
 	name = ''

@@ -11,6 +11,16 @@
 		{% endfor %}
 	</select>
 	
+	{% for flag in flag_set %}
+	<br/>
+	<label>{{flag}}</label>
+	<select name="{{flag}}">
+		<option value="None">-</option>
+		<option value="True">True</option>
+		<option value="False">False</option>
+	</select>
+	{% endfor %}
+	
 	<h3>Paste card names here</h3>
 	<textarea name="card_names"></textarea>
 	
