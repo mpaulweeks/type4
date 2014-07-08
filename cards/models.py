@@ -4,6 +4,10 @@ class Card(models.Model):
     name = models.CharField(max_length=100)
     isSorcery = models.BooleanField('is sorcery speed', default=False)
     
+#     def is_in_stack(self):
+#     	status = Status.objects.order_by('timestamp')[-1]
+#     	return status.is_in_stack()
+    
     def __unicode__(self):
         return self.name
 
@@ -24,6 +28,7 @@ class Status(models.Model):
 	status = models.IntegerField(
 		choices=STATUS_CHOICES,
 		default=IN_STACK)
+	timestamp = models.DateTimeField('timestamp')
     
 	def is_in_stack(self):
 		return self.status == self.IN_STACK
