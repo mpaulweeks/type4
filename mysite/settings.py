@@ -39,7 +39,7 @@ INSTALLED_APPS = (
     'south',
     'debug_toolbar',
     'polls',
-    'cards',
+    'type4',
 )
 
 MIDDLEWARE_CLASSES = (

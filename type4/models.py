@@ -6,8 +6,15 @@ logger = logging.getLogger(__name__)
 class Card(models.Model):
 
 	# fields
-    name = models.CharField(max_length=100)
-    isSorcery = models.BooleanField('is sorcery speed', default=False)
+    name = models.CharField(max_length=100)    
+    is_sorcery = models.BooleanField('is sorcery speed', default=False)
+    is_wrath = models.BooleanField('is mass removal', default=False)
+    is_burn = models.BooleanField('burns players', default=False)
+    is_lifegain = models.BooleanField('gives life', default=False)
+    is_fat = models.BooleanField('has combined p/t >= 14', default=False)
+    is_counterspell = models.BooleanField('counters spells', default=False)
+    is_masticore = models.BooleanField('provides repeated removal', default=False)
+    is_draw = models.BooleanField('draws more than one card', default=False)
     
     # funcs
     def is_in_stack(self):
@@ -21,6 +28,10 @@ class Card(models.Model):
     
     def __unicode__(self):
         return self.name
+    
+    @staticmethod
+    def flags():
+    	return list(n for n in Card._meta.get_all_field_names() if n.startswith('is'))
 
 class Status(models.Model):
     

@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from cards.models import Card
+from type4.models import Card
 
 def index(request):
     all_cards = Card.objects.order_by('name')

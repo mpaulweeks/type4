@@ -1,5 +1,5 @@
 from django.contrib import admin
-from cards.models import Card, Status
+from type4.models import Card, Status
     
 class StatusInline(admin.StackedInline):
 	model = Status
@@ -7,7 +7,7 @@ class StatusInline(admin.StackedInline):
 	
 class CardAdmin(admin.ModelAdmin):
 	inlines = [StatusInline]
-	flags = ['isSorcery']
+	flags = Card.flags()
 	fieldsets = [
 		(None,		{'fields': ['name']}),
 		('Flags',	{'fields': flags}),
