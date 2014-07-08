@@ -1,0 +1,22 @@
+{% extends "type4/base.html" %}
+
+{% block content %}
+
+	{% if filtered_cards %}
+		<ul>
+		{% for card in filtered_cards %}
+			<a href="http://magiccards.info/query?q={{ card.name }}">
+				{% if show_art %}
+					<img src="http://mtgimage.com/card/{{ card.name }}.jpg" width="300"><img/>
+					</a>
+				{% else %}
+					{{ card.name }}</a>
+					<br />
+				{% endif %}
+		{% endfor %}
+		</ul>
+	{% else %}
+		<p>No cards are available.</p>
+	{% endif %}
+	
+{% endblock %}

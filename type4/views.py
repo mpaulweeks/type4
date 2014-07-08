@@ -5,17 +5,19 @@ import datetime
 from type4.models import Card, Status
 
 def index(request):
+	return render(request, 'type4/base.html', {})
+	
+def get_card_view(request, show_art):
     all_cards = Card.objects.order_by('name')
-    filtered_cards = list(c for c in all_cards if c.is_in_stack())
-    context = {'filtered_cards': filtered_cards, 'show_art':False}
-    return render(request, 'type4/index.html', context) 
-    
-def gallery(request):
-    all_cards = Card.objects.order_by('name')
-    show_art = True
     filtered_cards = list(c for c in all_cards if c.is_in_stack())
     context = {'filtered_cards': filtered_cards, 'show_art':show_art}
-    return render(request, 'type4/gallery.html', context)  
+    return render(request, 'type4/card_view.html', context) 
+
+def textlist(request):
+	return get_card_view(request, False)
+    
+def gallery(request):
+	return get_card_view(request, True) 
     
 def add_cards(request):
 	status_set = Status().status_choices()
