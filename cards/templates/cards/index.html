@@ -1,0 +1,9 @@
+{% if filtered_cards %}
+    <ul>
+    {% for card in filtered_cards %}
+        <img src="http://mtgimage.com/card/{{ card.name }}.jpg"><img/>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No cards are available.</p>
+{% endif %}
