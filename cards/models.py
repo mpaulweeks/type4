@@ -1,12 +1,19 @@
 from django.db import models
+import logging
+
+logger = logging.getLogger(__name__)
 
 class Card(models.Model):
     name = models.CharField(max_length=100)
     isSorcery = models.BooleanField('is sorcery speed', default=False)
     
-#     def is_in_stack(self):
-#     	status = Status.objects.order_by('timestamp')[-1]
-#     	return status.is_in_stack()
+    def is_in_stack(self):
+    	ordered_statuses = Status.objects.filter(
+    		card_id = self.id
+    	).order_by('timestamp')
+    	status = ordered_statuses[ordered_statuses.count()-1]
+    	logger.critical(status)
+    	return status.is_in_stack()
     
     def __unicode__(self):
         return self.name
@@ -35,7 +42,7 @@ class Status(models.Model):
 
 	def __unicode__(self):
 		str = ''
-		if self.is_in_stack():
+		if not self.is_in_stack():
 			str = 'NOT '
 		return (self.card.name
 			+ ' is ' 
