@@ -33,6 +33,10 @@ class Card(models.Model):
     def flags():
     	return list(n for n in Card._meta.get_all_field_names() if n.startswith('is'))
 
+class StatusChoice():
+	name = ''
+	id = 0
+
 class Status(models.Model):
     
     # status enum
@@ -54,7 +58,16 @@ class Status(models.Model):
 		default=IN_STACK)
 	timestamp = models.DateTimeField('timestamp')
     
-    # funcs
+    # funcs	
+	def status_choices(self):
+		choices = []
+		for c in self.STATUS_CHOICES:
+			s = StatusChoice()
+			s.id = c[0]
+			s.name = c[1]
+			choices.append(s)
+		return choices
+    
 	def is_in_stack(self):
 		return self.status == self.IN_STACK
 
