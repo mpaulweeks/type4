@@ -7,5 +7,8 @@ class StatusInline(admin.StackedInline):
 	
 class CardAdmin(admin.ModelAdmin):
 	inlines = [StatusInline]
+	list_display = ['name', 'is_in_stack']
+	search_fields = ['name']
+
 
 admin.site.register(Card, CardAdmin)
