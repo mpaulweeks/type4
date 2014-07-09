@@ -5,19 +5,15 @@ from django.utils import timezone
 from type4.models import Card, Status
 
 def index(request):
-	return render(request, 'type4/decklist.html', {})
-	
-def get_card_view(request, show_art):
     all_cards = Card.objects.order_by('name')
     filtered_cards = list(c for c in all_cards if c.is_in_stack())
-    context = {'filtered_cards': filtered_cards, 'show_art':show_art}
-    return render(request, 'type4/card_view.html', context) 
-
-def textlist(request):
-	return get_card_view(request, False)
-    
-def gallery(request):
-	return get_card_view(request, True) 
+    card_names = '|'.join(list(c.name for c in filtered_cards));
+    context = {
+    	'filtered_cards': filtered_cards, 
+    	'card_names': card_names,
+    	'show_art': 'false',
+	}
+    return render(request, 'type4/decklist.html', context)  
     
 def add_cards(request):
 	status_set = Status().status_choices()

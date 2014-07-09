@@ -2,10 +2,11 @@
 
 {% block content %}
 
-	<div class="cardlist">
+	<div class="cardlist" data-art="{{ show_art }}">
 		<div class="data">
-			Terror|Serra Angel
+		{{ card_names }}
 		</div>
+		<ul><button class="toggle">Toggle view</button></ul>
 	</div>
 	
 {% endblock %}
