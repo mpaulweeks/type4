@@ -6,6 +6,6 @@ urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
     url(r'^add_cards/$', views.add_cards, name='add_cards'),
     url(r'^update/$', views.update, name='update'),
-    url(r'^changes/([0-9]{4}-[0-9]{2}-[0-9]{2})/([0-9]{4}-[0-9]{2}-[0-9]{2})/$', 
-    	views.changes, name='changes'),
+#    url(r'^changes/([0-9]{4}-[0-9]{2}-[0-9]{2})/([0-9]{4}-[0-9]{2}-[0-9]{2})/$', 
+    url(r'^changes/$', views.changes, name='changes'),
 )

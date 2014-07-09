@@ -3,17 +3,13 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.utils import timezone
 from type4.models import Card, Status
-import time
-from time import mktime
-from datetime import datetime
+from type4.forms import ChangesForm
+
+import logging
+logger = logging.getLogger(__name__)
 
 def extract_names(cards):
 	return '|'.join(list(c.name for c in cards))
-	
-def fix_time(time_arg):
-	time_struct = time.strptime(time_arg, '%Y-%m-%d')
-	dt = datetime.fromtimestamp(mktime(time_struct))
-	return dt
 
 def index(request):
     all_cards = Card.objects.order_by('name')
@@ -26,20 +22,30 @@ def index(request):
 	}
     return render(request, 'type4/decklist.html', context)  
     
-def changes(request, from_timestamp_arg, to_timestamp_arg):
-	from_timestamp = fix_time(from_timestamp_arg)
-	to_timestamp = fix_time(to_timestamp_arg)
-	all_cards = Card.objects.order_by('name')
-	cards_before = list(c for c in all_cards if c.was_in_stack(from_timestamp))
-	cards_after = list(c for c in all_cards if c.was_in_stack(to_timestamp))
-	cards_added = list(c for c in cards_after if c not in cards_before)
-	cards_removed = list(c for c in cards_before if c not in cards_after)
-	context = {
-		'added_names': extract_names(cards_added),
-		'removed_names': extract_names(cards_removed),
-		'show_art': 'true',
-	}
-	return render(request, 'type4/changes.html', context)
+def changes(request):
+	logger.debug('start')
+	logger.debug('form is GET')
+	form = ChangesForm(request.GET)
+	if form.is_valid(): # All validation rules pass
+		logger.debug('form is valid')
+		cd = form.cleaned_data
+		from_timestamp = cd['from_timestamp']
+		to_timestamp = cd['to_timestamp']
+		all_cards = Card.objects.order_by('name')
+		cards_before = list(c for c in all_cards if c.was_in_stack(from_timestamp))
+		cards_after = list(c for c in all_cards if c.was_in_stack(to_timestamp))
+		cards_added = list(c for c in cards_after if c not in cards_before)
+		cards_removed = list(c for c in cards_before if c not in cards_after)
+		context = {
+			'form': form,
+			'added_names': extract_names(cards_added),
+			'removed_names': extract_names(cards_removed),
+			'show_art': 'true',
+		}
+		return render(request, 'type4/changes.html', context)
+	return render(request, 'type4/changes.html', {
+		'form': form,
+	})
 	    
 def add_cards(request):
 	status_set = Status().status_choices()

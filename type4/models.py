@@ -6,7 +6,6 @@ from django.utils import timezone
 # init_model(get_engine())
 
 import logging
-
 logger = logging.getLogger(__name__)
 
 class Card(models.Model):

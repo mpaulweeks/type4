@@ -2,6 +2,11 @@
 
 {% block content %}
 
+<form action="{% url 'type4:changes' %}" method="GET">
+	{{ form.as_p }}
+	<input type="submit" value="Refresh" />
+</form>
+
 <h3> Added </h3>
 {% include "type4/_cardlist.html" with show_art=show_art card_names=added_names only %}
 

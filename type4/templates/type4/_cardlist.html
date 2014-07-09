@@ -1,8 +1,12 @@
 <!-- partial -->
 
-<div class="cardlist" data-art="{{ show_art }}">
-	<div class="data">
-	{{ card_names }}
+{% if card_names %}
+	<div class="cardlist" data-art="{{ show_art }}">
+		<div class="data">
+		{{ card_names }}
+		</div>
+		<ul><button class="toggle">Toggle image view</button></ul>
 	</div>
-	<ul><button class="toggle">Toggle image view</button></ul>
-</div>
+{% else %}
+	<div> No cards found :( </div>
+{% endif %}
