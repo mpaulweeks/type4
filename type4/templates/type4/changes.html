@@ -1,0 +1,11 @@
+{% extends "type4/base.html" %}
+
+{% block content %}
+
+<h3> Added </h3>
+{% include "type4/_cardlist.html" with show_art=show_art card_names=added_names only %}
+
+<h3> Removed </h3>
+{% include "type4/_cardlist.html" with show_art=show_art card_names=removed_names only %}
+	
+{% endblock %}

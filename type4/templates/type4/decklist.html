@@ -2,11 +2,8 @@
 
 {% block content %}
 
-	<div class="cardlist" data-art="{{ show_art }}">
-		<div class="data">
-		{{ card_names }}
-		</div>
-		<ul><button class="toggle">Toggle image view</button></ul>
-	</div>
+<h3> Current list: </h3>
+
+{% include "type4/_cardlist.html" %}
 	
 {% endblock %}
