@@ -1,5 +1,9 @@
 body {
 	background-color: #C1CCC0;
+	background-image: url('marble.jpg');
+}
+a {
+	color: white;
 }
 .cardlist .data {
 	display: none;
