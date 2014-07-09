@@ -16,9 +16,9 @@ input {
 	display: none;
 }
 .cardimage {
-	width: 300px;
+	width: 250px;
 }
 .columned {
-	-moz-column-width: 300px;
-	-webkit-column-width: 300px;
+	-moz-column-width: 250px;
+	-webkit-column-width: 250px;
 }
