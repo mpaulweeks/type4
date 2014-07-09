@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="style.css" />
     <title>{% block title %}Type 4{% endblock %}</title>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'type4/style.css' %}" />
+	<script src="{% static 'type4/cardlist.js' %}"></script>
 </head>
 
 <body>
@@ -18,5 +23,9 @@
     <div id="content">
         {% block content %}{% endblock %}
     </div>
+    
+    <script type="text/javascript">		
+			$(document).on("ready", init_cardlist);		
+	</script>
 </body>
 </html>

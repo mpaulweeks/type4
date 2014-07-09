@@ -1,11 +1,11 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
-import datetime
+from django.utils import timezone
 from type4.models import Card, Status
 
 def index(request):
-	return render(request, 'type4/base.html', {})
+	return render(request, 'type4/decklist.html', {})
 	
 def get_card_view(request, show_art):
     all_cards = Card.objects.order_by('name')
@@ -44,6 +44,6 @@ def update(request):
 		new_status = Status()
 		new_status.card = new_card
 		new_status.status = selected_status
-		new_status.timestamp = datetime.datetime.now()
+		new_status.timestamp = timezone.now()
 		new_status.save()
 	return HttpResponseRedirect(reverse('type4:add_cards'))

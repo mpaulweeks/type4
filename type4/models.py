@@ -1,4 +1,10 @@
 from django.db import models
+from django.utils import timezone
+
+# from mtgoracle.dbengine import get_engine
+# from mtgorale.model import Card as OracleCard
+# init_model(get_engine())
+
 import logging
 
 logger = logging.getLogger(__name__)
@@ -17,15 +23,17 @@ class Card(models.Model):
     is_draw = models.BooleanField('draws more than one card', default=False)
     
     # funcs
-    def is_in_stack(self):
-    	ordered_statuses = Status.objects.filter(
+    def was_in_stack(self, moment):
+    	recent_statuses = Status.objects.filter(
     		card_id = self.name
-    	).order_by('timestamp')
-    	if ordered_statuses.count() == 0:
-    		return False
-    	current_status = ordered_statuses[ordered_statuses.count()-1]
-    	logger.critical(current_status)
-    	return current_status.is_in_stack()
+    	).order_by('-timestamp')
+    	for status in recent_statuses:
+    		if status.timestamp < moment:
+    			return status.is_in_stack()
+    	return False
+    	
+    def is_in_stack(self):
+    	return self.was_in_stack(timezone.now())
     is_in_stack.boolean = True
     
     def __unicode__(self):
