@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.utils import timezone
@@ -31,6 +31,8 @@ def changes(request):
 		cd = form.cleaned_data
 		from_timestamp = cd['from_timestamp']
 		to_timestamp = cd['to_timestamp']
+		if to_timestamp <= from_timestamp:
+			raise Exception('From must be before To')
 		all_cards = Card.objects.order_by('name')
 		cards_before = list(c for c in all_cards if c.was_in_stack(from_timestamp))
 		cards_after = list(c for c in all_cards if c.was_in_stack(to_timestamp))

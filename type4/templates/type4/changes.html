@@ -2,6 +2,8 @@
 
 {% block content %}
 
+<h2> View changes: </h2>
+
 <form action="{% url 'type4:changes' %}" method="GET">
 	{{ form.as_p }}
 	<input type="submit" value="Refresh" />
