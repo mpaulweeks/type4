@@ -8,6 +8,7 @@
     {% load staticfiles %}
     <link rel="stylesheet" href="{% static 'type4/style.css' %}" />
 	<script src="{% static 'type4/cardlist.js' %}"></script>
+	
 </head>
 
 <body>
@@ -27,5 +28,7 @@
     <script type="text/javascript">		
 			$(document).on("ready", init_cardlist);		
 	</script>
+	<script src="{% static 'type4/gatherer_helper.js' %}"></script>
+	<script src="{% static 'type4/autocard.js' %}"></script>
 </body>
 </html>

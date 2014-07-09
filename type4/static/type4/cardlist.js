@@ -5,7 +5,9 @@ function init_cardlist() {
 	}
 	
 	function getImage(cardname) {
-		return '<img class="cardimage" src="http://mtgimage.com/card/'
+		return '<img class="cardimage" '
+			+ 'alt="' + cardname + '" '
+			+ 'src="http://mtgimage.com/card/'
 			+ cardname
 			+ '.jpg"><img/>';
 	}
@@ -14,13 +16,13 @@ function init_cardlist() {
 		if(showArt) {
 			return '<a href="'
 				+ getCardUrl(cardname)
-				+ '">'
+				+ '" target="_blank">'
 				+ getImage(cardname)
 				+ '</a>';
 		} else {		
 			return '<li><a href="'
 				+ getCardUrl(cardname)
-				+ '">'
+				+ '" class="mtgcard" target="_blank">'
 				+ cardname
 				+ '</a></li>';
 		}
@@ -44,11 +46,12 @@ function init_cardlist() {
 				+ html 
 				+ '</div>';
 		} else {
-			html = '<div class="cardlistdisplay"><ul>'
+			html = '<div class="cardlistdisplay columned">'
 				+ html
-				+ '</ul></div>';
+				+ '</div>';
 		}		
 		$this.append(html);
+		init_autocard();
 	}
 
 	$('.cardlist').each(function () {

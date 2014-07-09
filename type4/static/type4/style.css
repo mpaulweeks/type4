@@ -1,6 +1,13 @@
+body {
+	background-color: #C1CCC0;
+}
 .cardlist .data {
 	display: none;
 }
 .cardimage {
 	width: 300px;
+}
+.columned {
+	-moz-column-width: 300px;
+	-webkit-column-width: 300px;
 }
