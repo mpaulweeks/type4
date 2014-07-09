@@ -6,6 +6,12 @@ body {
 a {
 	color: white;
 }
+button {
+	color: black;
+}
+input {
+	color: black;
+}
 .cardlist .data {
 	display: none;
 }
