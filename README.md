@@ -4,7 +4,6 @@ type4
 Django site to track and view my Type4 MTG stack
 
 todo:
-filter page
 move admin page into admin section
 double check columns
 switch to not sqlite

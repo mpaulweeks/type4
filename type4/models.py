@@ -13,13 +13,21 @@ class Card(models.Model):
 	# fields
 	name = models.CharField(max_length=100)
 	is_instant = models.BooleanField('is instant or has flash', default=False)
-	is_wrath = models.BooleanField('is mass removal', default=False)
+	is_wrath = models.BooleanField('is one-shot mass removal or bounce', default=False)
 	is_burn = models.BooleanField('burns players', default=False)
 	is_lifegain = models.BooleanField('gives life', default=False)
-	is_fat = models.BooleanField('has combined p/t >= 14', default=False)
+	is_creature_fat = models.BooleanField('permanent: creature with combined p/t >= 14', default=False)
+	is_creature_threat = models.BooleanField('permanent: creature with power >= 4', default=False)
+	is_creature = models.BooleanField('permanent: creature', default=False)
+	is_artifact = models.BooleanField('permanent: artifact', default=False)
+	is_enchantment = models.BooleanField('permanent: enchantment', default=False)
 	is_counterspell = models.BooleanField('counters spells', default=False)
-	is_masticore = models.BooleanField('provides repeated removal', default=False)
+	is_masticore = models.BooleanField('masticore', default=False)
 	is_draw = models.BooleanField('draws more than one card', default=False)
+	is_removal_creature = models.BooleanField('kills: creatures', default=False)
+	is_removal_artifact = models.BooleanField('kills: artifacts', default=False)
+	is_removal_enchantment = models.BooleanField('kills: enchantments', default=False)
+	is_removal_land = models.BooleanField('kills: land', default=False)	
     
     # for use only by admin site
 	def current_status(self):
