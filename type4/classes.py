@@ -25,24 +25,43 @@ class CardWrapper():
 		self.current_status = sorted_statuses[0]
 
 	@staticmethod
-	def get_card_dict():
+	def get_cards():	
 		statuses = Status.objects.all()
 		status_dict = defaultdict(list)
 		for s in statuses:
 			status_dict[s.card_id].append(s)
 		cards = Card.objects.all()
-		card_dict = {}
+		wrappers = []
 		for c in cards:
-			card_dict[c.name.lower()] = CardWrapper(c, status_dict[c.id])
+			wrappers.append(CardWrapper(c, status_dict[c.id]))
+		return wrappers
+
+	@staticmethod
+	def get_dict_by_name():
+		wrappers = CardWrapper.get_cards()
+		card_dict = {}
+		for c in wrappers:
+			card_dict[c.name.lower()] = c
 		return card_dict
 
 	@staticmethod
-	def get_cards():
-		return CardWrapper.get_card_dict().values()
+	def get_dict_by_id():
+		wrappers = CardWrapper.get_cards()
+		card_dict = {}
+		for c in wrappers:
+			card_dict[c.card.id] = c
+		return card_dict
 
 	@staticmethod
-	def get_cards_by_status():
-		wrappers = CardWrapper.get_card_dict().values()
+	def get_cards_by_id(ids):
+		dict = CardWrapper.get_dict_by_id()
+		matches = []
+		for id in ids:
+			matches.append(dict.get(id))
+		return matches
+
+	@staticmethod
+	def filter_cards_by_status(wrappers):
 		status_dict = defaultdict(list)
 		for w in wrappers:
 			status_dict[w.current_status.status].append(w)
@@ -50,12 +69,12 @@ class CardWrapper():
 
 	@staticmethod
 	def get_card(name):
-		return CardWrapper.get_card_dict().get(name.lower())
+		return CardWrapper.get_dict_by_name().get(name.lower())
 		
 class CardChecker():
 
 	def __init__(self):
-		self.cards = CardWrapper.get_card_dict()
+		self.cards = CardWrapper.get_dict_by_name()
 		
 	def get_id(self, name):
 		wrapper = self.cards.get(name.lower())

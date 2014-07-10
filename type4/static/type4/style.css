@@ -15,6 +15,10 @@ input {
 .cardlist .data {
 	display: none;
 }
+.cardlistdisplay {
+	padding: 10px;
+	border: 4px double white;
+}
 .cardimage {
 	width: 250px;
 }

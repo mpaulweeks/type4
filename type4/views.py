@@ -10,7 +10,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 def extract_names(cards):
-	return '|'.join(list(c.name for c in cards)) #change to sorted?
+	return '|'.join(sorted(c.name for c in cards)) #change to sorted?
 
 def index(request):
     all_cards = CardWrapper.get_cards()
@@ -23,8 +23,8 @@ def index(request):
 	}
     return render(request, 'type4/default.html', context)  
 
-def all_cards(request):
-	dict = CardWrapper.get_cards_by_status()    
+def __all_cards_context(wrappers):
+	dict = CardWrapper.filter_cards_by_status(wrappers)    
 	in_cards = dict[Status.IN_STACK]
 	want_cards = dict[Status.GOING_IN_STACK]
 	removed_cards = dict[Status.REMOVED_FROM_STACK]
@@ -40,14 +40,33 @@ def all_cards(request):
 		'removed_count': len(removed_cards),
 		'rejected_count': len(rejected_cards),
 	}
+	return context
+	
+def all_cards(request):
+	wrappers = CardWrapper.get_cards()
+	context = __all_cards_context(wrappers)
 	return render(request, 'type4/all_cards.html', context)  
+
+def filter(request):
+	flag_set = Card.flags()
+	filter_dict = {}
+	for f in flag_set:
+		if f in request.GET:
+			s = request.GET[f]
+			if s == 'True':
+				filter_dict[f] = True
+			if s == 'False':
+				filter_dict[f] = False
+	cards = Card.objects.filter(**filter_dict)
+	ids = list(c.id for c in cards)
+	wrappers = CardWrapper.get_cards_by_id(ids)
+	context = __all_cards_context(wrappers)
+	context['flag_set'] = flag_set
+	return render(request, 'type4/filter.html', context)  
     
 def changes(request):
-	logger.debug('start')
-	logger.debug('form is GET')
 	form = ChangesForm(request.GET)
 	if form.is_valid(): # All validation rules pass
-		logger.debug('form is valid')
 		cd = form.cleaned_data
 		from_timestamp = cd['from_timestamp']
 		to_timestamp = cd['to_timestamp']
