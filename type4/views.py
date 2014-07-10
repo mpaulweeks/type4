@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.utils import timezone
 from type4.models import Card, Status
-from type4.classes import CardWrapper
+from type4.classes import CardWrapper, CardChecker
 from type4.forms import ChangesForm
 
 import logging
@@ -27,13 +27,13 @@ def all_cards(request):
     context = {
     	'show_art': 'false',
     	'in_names': extract_names(list(c for c in cards if (
-    		c.current_status.id == Status.IN_STACK))),
+    		c.current_status.status == Status.IN_STACK))),
     	'want_names': extract_names(list(c for c in cards if (
-    		c.current_status.id == Status.GOING_IN_STACK))),
+    		c.current_status.status == Status.GOING_IN_STACK))),
     	'removed_names': extract_names(list(c for c in cards if (
-    		c.current_status.id == Status.REMOVED_FROM_STACK))),
+    		c.current_status.status == Status.REMOVED_FROM_STACK))),
     	'rejected_names': extract_names(list(c for c in cards if (
-    		c.current_status.id == Status.REJECTED_FROM_STACK))),
+    		c.current_status.status == Status.REJECTED_FROM_STACK))),
 	}
     return render(request, 'type4/all_cards.html', context)  
     
@@ -81,8 +81,14 @@ def update(request):
 			flag_status.append({'flag_id': f, 'status':False})
 	selected_status = request.POST['status']
 	card_names = request.POST['card_names'].splitlines()
+	checker = CardChecker()
 	for n in card_names:
-		new_card = Card.objects.get_or_create(name=n)[0]
+		id = checker.get_id(n)
+		if id:
+			new_card = Card.objects.get(id=id)
+		else:
+			new_card = Card()
+			new_card.name = n
 		for f in flag_status:
 			setattr(new_card, f['flag_id'], f['status'])
 		new_card.save()

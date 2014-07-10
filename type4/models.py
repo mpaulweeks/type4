@@ -27,7 +27,7 @@ class Card(models.Model):
 			card_id = self.id
 		).order_by('-timestamp')
 		if recent_statuses:
-			return recent_statuses[0].id
+			return recent_statuses[0].status
 		return None
 
 	def __unicode__(self):

@@ -33,7 +33,7 @@ class CardWrapper():
 		cards = Card.objects.all()
 		card_dict = {}
 		for c in cards:
-			card_dict[c.name] = CardWrapper(c, status_dict[c.id])
+			card_dict[c.name.lower()] = CardWrapper(c, status_dict[c.id])
 		return card_dict
 
 	@staticmethod
@@ -42,4 +42,15 @@ class CardWrapper():
 
 	@staticmethod
 	def get_card(name):
-		return CardWrapper.get_card_dict()[name]
+		return CardWrapper.get_card_dict().get(name.lower())
+		
+class CardChecker():
+
+	def __init__(self):
+		self.cards = CardWrapper.get_card_dict()
+		
+	def get_id(self, name):
+		wrapper = self.cards.get(name.lower())
+		if wrapper:
+			return wrapper.card.id
+		return None
