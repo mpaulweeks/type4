@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{% block title %}Type 4{% endblock %}</title>
+    <title>
+    	{% block title %}Type 4{% endblock %}
+    	{% block subtitle %}{% endblock %}
+    </title>
     
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
@@ -35,6 +38,8 @@
 	</nav>
 
     <div class="container">
+		{% block intro %}{% endblock %}
+		<hr>
         {% block content %}{% endblock %}
     </div>
     
