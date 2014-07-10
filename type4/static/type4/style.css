@@ -22,3 +22,6 @@ input {
 	-moz-column-width: 250px;
 	-webkit-column-width: 250px;
 }
+.cardlist-title {
+	text-decoration: underline;
+}

@@ -56,7 +56,7 @@ function init_cardlist() {
 
 	$('.cardlist').each(function () {
 		var $this = $(this);
-		$this.find('.toggle').click(function (){
+		$this.find('.toggle').on('click', function (){
 			toggle($this);
 		});
 		toggle($this); //run now for init
