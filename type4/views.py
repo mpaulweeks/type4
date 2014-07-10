@@ -3,24 +3,39 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.utils import timezone
 from type4.models import Card, Status
+from type4.classes import CardWrapper
 from type4.forms import ChangesForm
 
 import logging
 logger = logging.getLogger(__name__)
 
 def extract_names(cards):
-	return '|'.join(list(c.name for c in cards))
+	return '|'.join(list(c.name for c in cards)) #change to sorted?
 
 def index(request):
-    all_cards = Card.objects.order_by('name')
+    all_cards = CardWrapper.get_cards()
     filtered_cards = list(c for c in all_cards if c.is_in_stack())
     card_names = extract_names(filtered_cards)
     context = {
-    	'filtered_cards': filtered_cards, 
     	'card_names': card_names,
     	'show_art': 'false',
 	}
-    return render(request, 'type4/decklist.html', context)  
+    return render(request, 'type4/default.html', context)  
+
+def all_cards(request):
+    cards = CardWrapper.get_cards()
+    context = {
+    	'show_art': 'false',
+    	'in_names': extract_names(list(c for c in cards if (
+    		c.current_status.id == Status.IN_STACK))),
+    	'want_names': extract_names(list(c for c in cards if (
+    		c.current_status.id == Status.GOING_IN_STACK))),
+    	'removed_names': extract_names(list(c for c in cards if (
+    		c.current_status.id == Status.REMOVED_FROM_STACK))),
+    	'rejected_names': extract_names(list(c for c in cards if (
+    		c.current_status.id == Status.REJECTED_FROM_STACK))),
+	}
+    return render(request, 'type4/all_cards.html', context)  
     
 def changes(request):
 	logger.debug('start')
@@ -33,7 +48,7 @@ def changes(request):
 		to_timestamp = cd['to_timestamp']
 		if to_timestamp <= from_timestamp:
 			raise Exception('From must be before To')
-		all_cards = Card.objects.order_by('name')
+		all_cards = CardWrapper.get_cards()
 		cards_before = list(c for c in all_cards if c.was_in_stack(from_timestamp))
 		cards_after = list(c for c in all_cards if c.was_in_stack(to_timestamp))
 		cards_added = list(c for c in cards_after if c not in cards_before)

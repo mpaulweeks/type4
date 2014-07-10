@@ -1,0 +1,25 @@
+{% extends "type4/base.html" %}
+
+{% block title %}
+	{{block.super}} - Full List
+{% endblock %}
+
+{% block content %}
+
+<h2> Current list: </h2>
+
+{% include "type4/_cardlist.html" with show_art=show_art card_names=in_names only %}
+
+<h2> Cards I'd like to add: </h2>
+
+{% include "type4/_cardlist.html" with show_art=show_art card_names=want_names only %}
+
+<h2> Cards that used to be in: </h2>
+
+{% include "type4/_cardlist.html" with show_art=show_art card_names=removed_names only %}
+
+<h2> Cards that would never work: </h2>
+
+{% include "type4/_cardlist.html" with show_art=show_art card_names=rejected_names only %}
+	
+{% endblock %}

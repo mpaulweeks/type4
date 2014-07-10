@@ -11,36 +11,31 @@ logger = logging.getLogger(__name__)
 class Card(models.Model):
 
 	# fields
-    name = models.CharField(max_length=100, primary_key=True)
-    is_sorcery = models.BooleanField('is sorcery speed', default=False)
-    is_wrath = models.BooleanField('is mass removal', default=False)
-    is_burn = models.BooleanField('burns players', default=False)
-    is_lifegain = models.BooleanField('gives life', default=False)
-    is_fat = models.BooleanField('has combined p/t >= 14', default=False)
-    is_counterspell = models.BooleanField('counters spells', default=False)
-    is_masticore = models.BooleanField('provides repeated removal', default=False)
-    is_draw = models.BooleanField('draws more than one card', default=False)
+	name = models.CharField(max_length=100)
+	is_instant = models.BooleanField('is instant or has flash', default=False)
+	is_wrath = models.BooleanField('is mass removal', default=False)
+	is_burn = models.BooleanField('burns players', default=False)
+	is_lifegain = models.BooleanField('gives life', default=False)
+	is_fat = models.BooleanField('has combined p/t >= 14', default=False)
+	is_counterspell = models.BooleanField('counters spells', default=False)
+	is_masticore = models.BooleanField('provides repeated removal', default=False)
+	is_draw = models.BooleanField('draws more than one card', default=False)
     
-    # funcs
-    def was_in_stack(self, moment):
-    	recent_statuses = Status.objects.filter(
-    		card_id = self.name
-    	).order_by('-timestamp')
-    	for status in recent_statuses:
-    		if status.timestamp < moment:
-    			return status.is_in_stack()
-    	return False
-    	
-    def is_in_stack(self):
-    	return self.was_in_stack(timezone.now())
-    is_in_stack.boolean = True
-    
-    def __unicode__(self):
-        return self.name
-    
-    @staticmethod
-    def flags():
-    	return list(n for n in Card._meta.get_all_field_names() if n.startswith('is_'))
+    # for use only by admin site
+	def current_status(self):
+		recent_statuses = Status.objects.filter(
+			card_id = self.id
+		).order_by('-timestamp')
+		if recent_statuses:
+			return recent_statuses[0].id
+		return None
+
+	def __unicode__(self):
+		return self.name
+
+	@staticmethod
+	def flags():
+		return list(n for n in Card._meta.get_all_field_names() if n.startswith('is_'))
 
 class StatusChoice():
 	name = ''

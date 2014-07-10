@@ -1,6 +1,7 @@
 from django.contrib import admin
 from type4.models import Card, Status
-    
+from datetime import date
+                                    
 class StatusInline(admin.StackedInline):
 	model = Status
 	extra = 1
@@ -12,7 +13,7 @@ class CardAdmin(admin.ModelAdmin):
 		(None,		{'fields': ['name']}),
 		('Flags',	{'fields': flags}),
 	]
- 	list_display = ['name', 'is_in_stack'] + flags
+ 	list_display = ['name', 'current_status'] + flags
  	list_filter = flags
 	search_fields = ['name']
 
