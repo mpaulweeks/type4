@@ -18,24 +18,29 @@ def index(request):
     card_names = extract_names(filtered_cards)
     context = {
     	'card_names': card_names,
+    	'card_count': len(filtered_cards),
     	'show_art': 'false',
 	}
     return render(request, 'type4/default.html', context)  
 
 def all_cards(request):
-    cards = CardWrapper.get_cards()
-    context = {
-    	'show_art': 'false',
-    	'in_names': extract_names(list(c for c in cards if (
-    		c.current_status.status == Status.IN_STACK))),
-    	'want_names': extract_names(list(c for c in cards if (
-    		c.current_status.status == Status.GOING_IN_STACK))),
-    	'removed_names': extract_names(list(c for c in cards if (
-    		c.current_status.status == Status.REMOVED_FROM_STACK))),
-    	'rejected_names': extract_names(list(c for c in cards if (
-    		c.current_status.status == Status.REJECTED_FROM_STACK))),
+	dict = CardWrapper.get_cards_by_status()    
+	in_cards = dict[Status.IN_STACK]
+	want_cards = dict[Status.GOING_IN_STACK]
+	removed_cards = dict[Status.REMOVED_FROM_STACK]
+	rejected_cards = dict[Status.REJECTED_FROM_STACK]
+	context = {
+		'show_art': 'false',
+		'in_names': extract_names(in_cards),
+		'want_names': extract_names(want_cards),
+		'removed_names': extract_names(removed_cards),
+		'rejected_names': extract_names(rejected_cards),
+		'in_count': len(in_cards),
+		'want_count': len(want_cards),
+		'removed_count': len(removed_cards),
+		'rejected_count': len(rejected_cards),
 	}
-    return render(request, 'type4/all_cards.html', context)  
+	return render(request, 'type4/all_cards.html', context)  
     
 def changes(request):
 	logger.debug('start')
@@ -56,7 +61,9 @@ def changes(request):
 		context = {
 			'form': form,
 			'added_names': extract_names(cards_added),
+			'added_count': len(cards_added),
 			'removed_names': extract_names(cards_removed),
+			'removed_count': len(cards_removed),
 			'show_art': 'true',
 		}
 		return render(request, 'type4/changes.html', context)

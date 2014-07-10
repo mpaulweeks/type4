@@ -13,8 +13,8 @@
 	<input type="submit" value="Refresh" />
 </form>
 
-{% include "type4/_cardlist.html" with title='Added' show_art=show_art card_names=added_names only %}
+{% include "type4/_cardlist.html" with title='Added' card_names=added_names card_count=added_count %}
 
-{% include "type4/_cardlist.html" with title='Removed' show_art=show_art card_names=removed_names only %}
+{% include "type4/_cardlist.html" with title='Removed' card_names=removed_names card_count=removed_count %}
 	
 {% endblock %}

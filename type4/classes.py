@@ -41,6 +41,14 @@ class CardWrapper():
 		return CardWrapper.get_card_dict().values()
 
 	@staticmethod
+	def get_cards_by_status():
+		wrappers = CardWrapper.get_card_dict().values()
+		status_dict = defaultdict(list)
+		for w in wrappers:
+			status_dict[w.current_status.status].append(w)
+		return status_dict
+
+	@staticmethod
 	def get_card(name):
 		return CardWrapper.get_card_dict().get(name.lower())
 		
