@@ -53,4 +53,4 @@ def update(request):
 		new_status.status = selected_status
 		new_status.timestamp = timezone.now()
 		new_status.save()
-	return HttpResponseRedirect(reverse('type4:add_cards'))
+	return HttpResponseRedirect(reverse('type4:admin_add_cards'))

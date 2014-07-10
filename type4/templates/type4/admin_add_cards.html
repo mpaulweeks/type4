@@ -2,7 +2,7 @@
 
 <h1>Add cards</h1>
 	
-<form action="{% url 'type4:update' %}" method="post">
+<form action="{% url 'type4:admin_update' %}" method="post">
 	{% csrf_token %}
 	<label>Inclusion status:</label>
 	<select name="status">

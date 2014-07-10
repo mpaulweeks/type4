@@ -7,6 +7,6 @@ urlpatterns = patterns('',
     url(r'^list/$', views.all_cards, name='all_cards'),
     url(r'^filter/$', views.filter, name='filter'),
     url(r'^changes/$', views.changes, name='changes'),
-    url(r'^admin/add_cards/$', admin_views.add_cards, name='add_cards'),
-    url(r'^admin/update/$', admin_views.update, name='update'),
+    url(r'^admin/add_cards/$', admin_views.add_cards, name='admin_add_cards'),
+    url(r'^admin/update/$', admin_views.update, name='admin_update'),
 )
