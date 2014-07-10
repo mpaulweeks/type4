@@ -1,10 +1,6 @@
 from django.db import models
 from django.utils import timezone
 
-# from mtgoracle.dbengine import get_engine
-# from mtgorale.model import Card as OracleCard
-# init_model(get_engine())
-
 import logging
 logger = logging.getLogger(__name__)
 

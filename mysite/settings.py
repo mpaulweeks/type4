@@ -39,8 +39,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'south',
     'debug_toolbar',
-    'mtgoracle',
-    'polls',
     'type4',
 )
 
